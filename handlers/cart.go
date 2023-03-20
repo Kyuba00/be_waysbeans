@@ -59,7 +59,7 @@ func (h *handlerCart) CreateCart(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	transaction, err := h.CartRepository.GetTransactionID(userId)
+	transaction, _ := h.CartRepository.GetTransactionID(userId)
 
 	cart := models.Cart{
 		ProductID:     request.ProductID,
