@@ -45,7 +45,7 @@ func (h *handlerAuth) Register(c echo.Context) error {
 		Name:     request.Name,
 		Email:    request.Email,
 		Password: password,
-		Status:   "buyer",
+		Status:   "customer",
 	}
 
 	data, err := h.AuthRepository.Register(user)
