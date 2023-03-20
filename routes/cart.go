@@ -10,14 +10,13 @@ import (
 )
 
 func CartRoutes(e *echo.Group) {
-	// GET Cart REPOSITORY HANDLER
-	cartRepository := repositories.RepositoryCart(mysql.DB)
-	h := handlers.HandlerCart(cartRepository)
+	CartRepository := repositories.RepositoryCart(mysql.DB)
+	h := handlers.HandlerCart(CartRepository)
 
-	// DEFINE ROUTES
-	e.GET("/carts", h.FindCarts)
-	e.GET("/cart/:id", middleware.Auth(h.GetCart))
-	e.POST("/cart", middleware.Auth(middleware.UploadFile(h.CreateCart)))
-	// e.PATCH("/cart/:id", middleware.Auth(middleware.UploadFile(h.UpdateCart)))
-	e.DELETE("/cart/:id", middleware.Auth(h.DeleteCart))
+	e.GET("/carts", h.FindCarts, middleware.Auth)
+	e.GET("/cart-id", h.FindCartsByTransaction, middleware.Auth)
+	e.GET("/cart/:id", h.GetCart, middleware.Auth)
+	e.POST("/cart", h.CreateCart, middleware.Auth)
+	e.PATCH("/cart/:id", h.UpdateCart, middleware.Auth)
+	e.DELETE("/cart/:id", h.DeleteCart, middleware.Auth)
 }

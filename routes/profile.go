@@ -10,10 +10,12 @@ import (
 )
 
 func ProfileRoutes(e *echo.Group) {
-	// GET USER REPOSITORY HANDLER
-	profileRepository := repositories.RepositoryProfile(mysql.DB)
-	h := handlers.HandlerUser(profileRepository)
+	ProfileRepository := repositories.RepositoryProfile(mysql.DB)
+	h := handlers.HandlerProfile(ProfileRepository)
 
-	//DEFINE ROUTES
-	e.GET("/profile", h.GetUser, middleware.Auth)
+	e.GET("/profiles", h.FindProfiles, middleware.Auth)
+	e.GET("/profile/:id", h.GetProfile, middleware.Auth)
+	e.POST("/profile", h.CreateProfile, middleware.Auth, middleware.UploadFile)
+	e.PATCH("/profile/:id", h.UpdateProfile, middleware.Auth, middleware.UploadFile)
+	e.DELETE("/profile/:id", h.DeleteProfile, middleware.Auth)
 }

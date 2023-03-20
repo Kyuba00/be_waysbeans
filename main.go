@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"waysbeans_be/database"
 	"waysbeans_be/pkg/mysql"
 	"waysbeans_be/routes"
@@ -28,15 +29,12 @@ func main() {
 		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
 	}))
 
-	v1 := e.Group("/api/v1")
-	routes.AuthRoutes(v1)
-	routes.UserRoutes(v1)
-	routes.ProductRoutes(v1)
-	routes.CartRoutes(v1)
-	routes.TransactionRoutes(v1)
+	routes.RouteInit(e.Group("/api/v1"))
 
 	e.Static("/uploads", "./uploads")
 
-	fmt.Println("server running localhost:5000")
-	e.Logger.Fatal(e.Start("localhost:5000"))
+	PORT := os.Getenv("PORT")
+
+	fmt.Println("server running localhost:" + PORT)
+	e.Logger.Fatal(e.Start(":" + PORT))
 }

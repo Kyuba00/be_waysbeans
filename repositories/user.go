@@ -29,7 +29,7 @@ func (r *repository) FindUsers() ([]models.User, error) {
 	return users, err
 }
 
-func (r *repository) GetUSer(ID int) (models.User, error) {
+func (r *repository) GetUser(ID int) (models.User, error) {
 	var user models.User
 	err := r.db.Preload("Transaction").Preload("Transaction.Cart").First(&user, ID).Error
 

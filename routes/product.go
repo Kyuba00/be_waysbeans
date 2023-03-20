@@ -10,14 +10,12 @@ import (
 )
 
 func ProductRoutes(e *echo.Group) {
-	// GET PRODUCT REPOSITORY HANDLER
-	productRepository := repositories.RepositoryProduct(mysql.DB)
-	h := handlers.HandlerProduct(productRepository)
+	ProductRepository := repositories.RepositoryProduct(mysql.DB)
+	h := handlers.HandlerProduct(ProductRepository)
 
-	// DEFINE ROUTES
 	e.GET("/products", h.FindProducts)
-	e.GET("/product/:id", middleware.Auth(h.GetProduct))
-	e.POST("/product", middleware.Auth(middleware.UploadFile(h.CreateProduct)))
-	e.PATCH("/product/:id", middleware.Auth(middleware.UploadFile(h.UpdateProduct)))
-	e.DELETE("/product/:id", middleware.Auth(h.DeleteProduct))
+	e.GET("/product/:id", h.GetProduct)
+	e.POST("/product", h.CreateProduct, middleware.UploadFile)
+	e.PATCH("/product/:id", h.UpdateProduct, middleware.UploadFile)
+	e.DELETE("/product/:id", h.DeleteProduct)
 }

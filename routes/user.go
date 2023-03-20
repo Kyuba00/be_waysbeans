@@ -2,7 +2,6 @@ package routes
 
 import (
 	"waysbeans_be/handlers"
-	"waysbeans_be/pkg/middleware"
 	"waysbeans_be/pkg/mysql"
 	"waysbeans_be/repositories"
 
@@ -10,12 +9,12 @@ import (
 )
 
 func UserRoutes(e *echo.Group) {
-	// GET USER REPOSITORY HANDLER
-	userRepository := repositories.RepositoryUser(mysql.DB)
-	h := handlers.HandlerUser(userRepository)
+	UserRepository := repositories.RepositoryUser(mysql.DB)
+	h := handlers.HandlerUser(UserRepository)
 
-	//DEFINE ROUTES
-	e.GET("/user", h.GetUser, middleware.Auth)
-	e.PATCH("/user/:id", h.UpdateUser, middleware.Auth, middleware.UploadFile) // tambahin middleware.UploadFile buat photo profile nanti
-
+	e.GET("/users", h.FindUsers)
+	e.GET("/user/:id", h.GetUser)
+	e.POST("/user", h.CreateUser)
+	e.PATCH("/user/:id", h.UpdateUser)
+	e.DELETE("/user/:id", h.DeleteUser)
 }
